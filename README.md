@@ -1,32 +1,84 @@
-# GitOps-style Continuous Delivery For Kubernetes Engine With Cloud Build
+# 🚀 GitOps CI/CD Pipeline with Google Cloud Build & Kubernetes
 
-This repository contains the code used in the
-[GitOps-style Continuous Delivery with Cloud Build](https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build)
-tutorial.
+![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 
-GitOps is a Continuous Delivery approach [first described by Weaveworks](https://www.weave.works/blog/gitops-operations-by-pull-request) that is
-popular in the Kubernetes community. A key part of GitOps is the idea of
-"environments-as-code": describing your deployments declaratively by files (for
-example, Kubernetes manifests) stored in a Git repository.
+---
 
-In this tutorial, you create a CI/CD pipeline that automatically builds a
-container image from commited code, stores the image in Google Artifact
-Registry, updates a Kubernetes manifest in a Git repository and triggers a
-deployment to Kubernetes Engine using that manifest.
+## 📌 About This Project
 
-This tutorial uses two Git repositories: one for the application —the _app_
-repository— and one for storing the deployment manifests —the _env_ repository.
-When a change is pushed to the application repository, tests are run, a
-container image is built and pushed to Artifact Registry. Once the image is
-pushed, the deployment manifests are updated to use that new image and they are
-pushed to the _candidate_ branch of the _env_ repository. This triggers the actual
-deployment in Kubernetes. Once the deployment is finished, the new manifests
-are copied over to the _production_ branch of the _env_ repository.
+This project implements a **GitOps-style CI/CD pipeline** on Google Cloud that automatically builds, tests, and deploys a containerised Python web application to **Google Kubernetes Engine (GKE)** using **Cloud Build**.
 
-In the end, you have a system where:
-* The _candidate_ branch is a history of the deployment attempts.
-* The _production_ branch is a history of the successful deployments.
-* You have a view of successful and failed deployments in Cloud Build.
-* You can rollback to any previous deployment by re-executing the corresponding
-  job in Cloud Build. A rollback also updates the _production_ branch to
-  truthfully reflect the history of deployments.
+Completed as part of the **Google Cloud Arcade program** — this hands-on project demonstrates real-world DevOps practices including automated testing, container image management, and GitOps-style deployment workflows.
+
+---
+
+## ⚙️ How It Works
+
+When code is pushed to this repository, the following pipeline triggers automatically:
+
+```
+Code Push (GitHub)
+       ↓
+Cloud Build — runs automated tests
+       ↓
+Docker image built & pushed to Artifact Registry
+       ↓
+Kubernetes manifest updated with new image tag
+       ↓
+Deployed to GKE (candidate branch)
+       ↓
+On success → promoted to production branch ✅
+```
+
+This means:
+- The **candidate branch** = history of all deployment attempts
+- The **production branch** = history of only successful deployments
+- Any failed deployment can be **rolled back** by re-running a previous Cloud Build job
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| **Python + Flask** | Web application |
+| **Docker** | Containerisation |
+| **Google Cloud Build** | CI/CD pipeline automation |
+| **Google Artifact Registry** | Container image storage |
+| **Google Kubernetes Engine (GKE)** | Container orchestration & deployment |
+| **Kubernetes Manifests** | Declarative deployment configuration |
+| **GitOps** | Git as single source of truth for deployments |
+
+---
+
+## 📁 Repository Structure
+
+```
+hello-cloudbuild-app/
+├── app.py                      # Flask web application
+├── test_app.py                 # Automated tests
+├── Dockerfile                  # Container image definition
+├── cloudbuild.yaml             # CI pipeline (build + test)
+├── cloudbuild-delivery.yaml    # CD pipeline (deploy to GKE)
+├── cloudbuild-trigger-cd.yaml  # Trigger configuration
+├── kubernetes.yaml.tpl         # Kubernetes deployment manifest template
+└── known_hosts.github          # GitHub SSH configuration
+```
+
+---
+
+## 💡 What I Learned
+
+- How to set up a **fully automated CI/CD pipeline** from code commit to production
+- How **GitOps** uses Git branches to track deployment history
+- How to **containerise** a Python app with Docker
+- How **Cloud Build triggers** work with GitHub repositories
+- How to deploy and manage apps on **Google Kubernetes Engine**
+- How to implement **automated rollbacks** using Cloud Build job history
+
+---
+<p align="center"><em>Built with ☁️ on Google Cloud | Part of Google Cloud Arcade — Diamond League</em></p>
